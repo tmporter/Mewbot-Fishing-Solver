@@ -7,12 +7,36 @@
     <title>MewBot Fishing Solver</title>
 
     <style>
+      :root {
+        --base-gray: #121212;
+        --ligher-gray: #313131;
+        --text-color: #fafafa;
+      }
+
       body {
-        background: #121212;
-        color: #fafafa;
+        background: var(--base-gray);
+        color: var(--text-color);
         text-align: center;
         padding: 50px;
         font-family: Arial, Helvetica, sans-serif;
+      }
+
+      input#hint {
+        background: var(--ligher-gray);
+        color: inherit;
+        border: 1px solid var(--text-color);
+        padding: 0.5rem 1rem;
+        font-size: 1.1rem;
+        border-radius: 50px;
+        width: 12rem;
+      }
+
+      #output {
+        font-size: 1.1rem;
+        font-family: "Courier New", Courier, monospace;
+        display: flex;
+        flex-direction: column;
+        margin: 10px 0;
       }
     </style>
   </head>
@@ -21,7 +45,7 @@
     <h2>MewBot Fishing Solver</h2>
     <input id="hint" type="text" placeholder="e.g. P_ka__u" />
 
-    <pre id="output"></pre>
+    <div id="output"></div>
 
     <script>
       const names = [
@@ -932,7 +956,18 @@
 
       document.getElementById("hint").oninput = (e) => {
         const { value } = e.currentTarget;
-        document.getElementById("output").innerHTML = solve(value).join("\n");
+        const parent = document.getElementById("output");
+        parent.innerHTML = "";
+
+        const children = solve(value).map((result) => {
+          const el = document.createElement("span");
+          el.innerHTML = result;
+          return el;
+        });
+
+        for (let child of children) {
+          parent.appendChild(child);
+        }
       };
     </script>
   </body>
